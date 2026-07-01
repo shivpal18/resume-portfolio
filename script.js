@@ -49,3 +49,118 @@ navItems.forEach(item => {
         navLinks.classList.remove("active");
     });
 });
+
+const sections = document.querySelectorAll("section");
+
+window.addEventListener("scroll", () => {
+
+    let current = "";
+
+    sections.forEach(section => {
+
+        const sectionTop = section.offsetTop - 150;
+        const sectionHeight = section.offsetHeight;
+
+        if (
+            window.scrollY >= sectionTop &&
+            window.scrollY < sectionTop + sectionHeight
+        ) {
+            current = section.getAttribute("id");
+        }
+
+    });
+
+    navItems.forEach(link => {
+
+        link.classList.remove("active");
+
+        if (link.getAttribute("href") === "#" + current) {
+            link.classList.add("active");
+        }
+
+    });
+
+});
+
+const reveals = document.querySelectorAll(".reveal");
+
+function revealSection() {
+
+    reveals.forEach(section => {
+
+        const windowHeight = window.innerHeight;
+        const sectionTop = section.getBoundingClientRect().top;
+        const revealPoint = 120;
+
+        if (sectionTop < windowHeight - revealPoint) {
+            section.classList.add("active");
+        }
+
+    });
+
+}
+
+window.addEventListener("scroll", revealSection);
+
+revealSection();
+
+const scrollTopBtn = document.querySelector(".scroll-top");
+
+window.addEventListener("scroll", () => {
+
+    if(window.scrollY > 300){
+
+        scrollTopBtn.classList.add("show");
+
+    }else{
+
+        scrollTopBtn.classList.remove("show");
+
+    }
+
+});
+
+scrollTopBtn.addEventListener("click", () => {
+
+    window.scrollTo({
+
+        top: 0,
+        behavior: "smooth"
+
+    });
+
+});
+
+// ================= EmailJS =================
+
+emailjs.init("JW9KCuXEo3QTrHt1j");
+
+const contactForm = document.getElementById("contact-form");
+
+contactForm.addEventListener("submit", function (e) {
+
+    e.preventDefault();
+
+    emailjs.sendForm(
+        "service_88x6j3o",
+        "template_5qdb0zh",
+        this
+    )
+
+    .then(() => {
+
+        alert("Message Sent Successfully! ✅");
+
+        contactForm.reset();
+
+    })
+
+    .catch((error) => {
+
+        console.error(error);
+
+        alert("Failed to send message ❌");
+
+    });
+
+});
